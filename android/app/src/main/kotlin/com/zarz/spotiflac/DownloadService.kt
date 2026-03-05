@@ -10,6 +10,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 
 /**
@@ -114,6 +115,7 @@ class DownloadService : Service() {
      * dataSync services have a 6-hour limit in a 24-hour period.
      * We must call stopSelf() within a few seconds to avoid a crash.
      */
+    @RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
     override fun onTimeout(startId: Int, fgsType: Int) {
         // Log the timeout for debugging
         android.util.Log.w("DownloadService", "Foreground service timeout reached (6 hours limit). Stopping service.")

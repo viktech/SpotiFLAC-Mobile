@@ -70,7 +70,9 @@ Translation files are located in `lib/l10n/arb/`.
 
 - **Flutter SDK** 3.10.0 or higher
 - **Dart SDK** 3.10.0 or higher
+- **Go** 1.24 or higher (required to build the native Go backend)
 - **Android Studio** or **VS Code** with Flutter extensions
+- **Android NDK r27+** (for Android builds; install via Android Studio or `sdkmanager "ndk;27.3.13750724"`)
 - **Git**
 
 ### Getting Started
@@ -86,17 +88,33 @@ Translation files are located in `lib/l10n/arb/`.
    git remote add upstream https://github.com/zarzet/SpotiFLAC-Mobile.git
    ```
 
-3. **Install dependencies**
+3. **Build the Go backend** (required before the first Flutter build)
+
+   **Android:**
+   ```bash
+   ./scripts/build_android.sh
+   ```
+   This compiles the Go backend to `android/app/libs/gobackend.aar` using `gomobile bind`.
+   The script auto-installs `gomobile` if it is not already present.
+
+   **iOS** (macOS only):
+   ```bash
+   ./scripts/build_ios.sh
+   ```
+
+   > Re-run this step whenever you modify files in `go_backend/`.
+
+4. **Install Flutter dependencies**
    ```bash
    flutter pub get
    ```
 
-4. **Generate code** (for Riverpod, JSON serialization, etc.)
+5. **Generate code** (for Riverpod, JSON serialization, etc.)
    ```bash
    dart run build_runner build --delete-conflicting-outputs
    ```
 
-5. **Run the app**
+6. **Run the app**
    ```bash
    flutter run
    ```
@@ -110,6 +128,8 @@ flutter build apk --debug
 # Release build
 flutter build apk --release
 ```
+
+> **Note:** The compiled `gobackend.aar` (Android) and `Gobackend.xcframework` (iOS) are not committed to the repository. Always run the appropriate backend build script before building with Flutter.
 
 ## Project Structure
 
